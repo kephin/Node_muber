@@ -6,7 +6,11 @@ module.exports = {
   },
   async create(req, res) {
     const driverProps = req.body;
-    const driver = await Driver.create(driverProps);
-    res.send(driver);
+    try {
+      const driver = await Driver.create(driverProps);
+      res.send(driver);
+    } catch (err) {
+      res.status(422).send({ error: err.message });
+    }
   },
 };
