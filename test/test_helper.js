@@ -6,3 +6,11 @@ before(done => {
     .once('open', () => done())
     .on('error', err => console.warn('Warning', err));
 });
+
+beforeEach(done => {
+  const { drivers } = mongoose.connection.collections;
+  drivers.drop()
+    .then(() => done())
+    // the very first when the database runs, we do not yet have drivers collection
+    .catch(() => done());
+});
