@@ -32,4 +32,12 @@ describe('Drivers controller', () => {
     const newDriver = await Driver.findOne({ name: 'kevin' });
     assert(newDriver.isAvailable === true);
   });
+  it('Delete to /api/drivers/id deletes an existing driver', async() => {
+    const driver = new Driver({ name: 'kevin', email: 'kevin@test.com' });
+    await driver.save();
+    await request(app)
+      .delete(`/api/drivers/${driver._id}`);
+    const deletedDriver = await Driver.findOne({ name: 'kevin' });
+    assert(deletedDriver === null);
+  });
 });
