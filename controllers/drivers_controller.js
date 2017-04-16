@@ -24,4 +24,13 @@ module.exports = {
       next();
     }
   },
+  async delete(req, res, next) {
+    const driverId = req.params.id;
+    try {
+      const driver = await Driver.findByIdAndRemove(driverId);
+      res.status(204).send(driver);
+    } catch (err) {
+      next();
+    }
+  },
 };
