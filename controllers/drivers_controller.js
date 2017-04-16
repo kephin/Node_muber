@@ -17,7 +17,7 @@ module.exports = {
     const driverProps = req.body;
     const driverId = req.params.id;
     try {
-      const prevDriver = await Driver.findByIdAndUpdate(driverId, driverProps);
+      await Driver.findByIdAndUpdate(driverId, driverProps);
       const newDriver = await Driver.findById(driverId);
       res.send(newDriver);
     } catch (err) {
