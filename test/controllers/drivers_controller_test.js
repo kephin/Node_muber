@@ -40,4 +40,27 @@ describe('Drivers controller', () => {
     const deletedDriver = await Driver.findOne({ name: 'kevin' });
     assert(deletedDriver === null);
   });
+  it('Get to /api/drivers finds drivers in a location', async() => {
+    const hsinChuDriver = new Driver({
+      name: 'Jason',
+      email: 'jason@test.com',
+      geometry: {
+        type: 'Point',
+        coordinates: [120.968093, 24.8022417],
+      },
+    });
+    const taipeiDriver = new Driver({
+      name: 'Allen',
+      email: 'allen@test.com',
+      geometry: {
+        type: 'Point',
+        coordinates: [121.5276713, 25.0423118],
+      },
+    });
+    await Promise.all([hsinChuDriver.save(), taipeiDriver.save()]);
+    const res = await request(app)
+      .get('/api/drivers?lng=121.5343875&lat=25.0136385');
+    assert(res.body.length === 1);
+    assert(res.body[0].obj.name === 'Allen');
+  });
 });
