@@ -6,8 +6,12 @@ module.exports = {
   },
   async index(req, res, next) {
     const { lng, lat } = req.query;
-    const drivers = await Driver.geoNear({ type: 'Point', coordinates: [parseFloat(lng), parseFloat(lat)] }, { spherical: true, maxDistance: 50000 });
-    res.send(drivers);
+    try {
+      const drivers = await Driver.geoNear({ type: 'Point', coordinates: [parseFloat(lng), parseFloat(lat)] }, { spherical: true, maxDistance: 50000 });
+      res.send(drivers);
+    } catch (err) {
+      next();
+    }
   },
   async create(req, res, next) {
     const driverProps = req.body;
